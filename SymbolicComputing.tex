@@ -22,6 +22,7 @@
 \newcommand{\hlkwb}[1]{\textcolor[rgb]{0,0.439,0.902}{#1}}%
 \newcommand{\hlkwc}[1]{\textcolor[rgb]{0.188,0.941,0.314}{#1}}%
 \newcommand{\hlkwd}[1]{\textcolor[rgb]{0.69,0.188,0.941}{#1}}%
+\let\hlipl\hlkwb
 
 \usepackage{framed}
 \makeatletter
@@ -88,7 +89,7 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{NormDensity} \hlkwb{<-} \hlkwd{expression}\hlstd{(}\hlnum{1}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlnum{2} \hlopt{*} \hlstd{pi)} \hlopt{*} \hlkwd{exp}\hlstd{(}\hlopt{-}\hlstd{x}\hlopt{^}\hlnum{2}\hlopt{/}\hlnum{2}\hlstd{))}
+\hlstd{NormDensity}\hlkwb{<-}\hlkwd{expression}\hlstd{(}\hlnum{1}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlnum{2}\hlopt{*}\hlstd{pi)}\hlopt{*}\hlkwd{exp}\hlstd{(}\hlopt{-}\hlstd{x}\hlopt{^}\hlnum{2}\hlopt{/}\hlnum{2}\hlstd{))}
 \hlkwd{class}\hlstd{(NormDensity)}
 \end{alltt}
 \begin{verbatim}
@@ -100,13 +101,13 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{D}\hlstd{(NormDensity,} \hlstr{"x"}\hlstd{)}
+\hlkwd{D}\hlstd{(NormDensity,}\hlstr{"x"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## -(1/sqrt(2 * pi) * (exp(-x^2/2) * (2 * x/2)))
 \end{verbatim}
 \begin{alltt}
-\hlkwd{deriv}\hlstd{(NormDensity,} \hlstr{"x"}\hlstd{)}
+\hlkwd{deriv}\hlstd{(NormDensity,}\hlstr{"x"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## expression({
@@ -120,7 +121,7 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 ## })
 \end{verbatim}
 \begin{alltt}
-\hlkwd{deriv3}\hlstd{(NormDensity,} \hlstr{"x"}\hlstd{)}
+\hlkwd{deriv3}\hlstd{(NormDensity,}\hlstr{"x"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## expression({
@@ -147,10 +148,9 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{DD} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{expr}\hlstd{,} \hlkwc{name}\hlstd{,} \hlkwc{order} \hlstd{=} \hlnum{1}\hlstd{) \{}
-    \hlkwa{if} \hlstd{(order} \hlopt{<} \hlnum{1}\hlstd{)}
-        \hlkwd{stop}\hlstd{(}\hlstr{"'order' must be >= 1"}\hlstd{)}
-    \hlkwa{if} \hlstd{(order} \hlopt{==} \hlnum{1}\hlstd{)}
-        \hlkwd{D}\hlstd{(expr, name)} \hlkwa{else} \hlkwd{DD}\hlstd{(}\hlkwd{D}\hlstd{(expr, name), name, order} \hlopt{-} \hlnum{1}\hlstd{)}
+  \hlkwa{if}\hlstd{(order} \hlopt{<} \hlnum{1}\hlstd{)} \hlkwd{stop}\hlstd{(}\hlstr{"'order' must be >= 1"}\hlstd{)}
+  \hlkwa{if}\hlstd{(order} \hlopt{==} \hlnum{1}\hlstd{)} \hlkwd{D}\hlstd{(expr, name)}
+  \hlkwa{else} \hlkwd{DD}\hlstd{(}\hlkwd{D}\hlstd{(expr, name), name, order} \hlopt{-} \hlnum{1}\hlstd{)}
 \hlstd{\}}
 \hlkwd{DD}\hlstd{(NormDensity,} \hlstr{"x"}\hlstd{,} \hlnum{3}\hlstd{)}
 \end{alltt}
@@ -168,7 +168,7 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{DFun} \hlkwb{<-} \hlkwd{deriv}\hlstd{(NormDensity,} \hlstr{"x"}\hlstd{,} \hlkwc{function.arg} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{DFun}\hlkwb{<-}\hlkwd{deriv}\hlstd{(NormDensity,}\hlstr{"x"}\hlstd{,}\hlkwc{function.arg} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlkwd{DFun}\hlstd{(}\hlnum{1}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
@@ -192,7 +192,7 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{Normfun} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlnum{1}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlnum{2} \hlopt{*} \hlstd{pi)} \hlopt{*} \hlkwd{exp}\hlstd{(}\hlopt{-}\hlstd{x}\hlopt{^}\hlnum{2}\hlopt{/}\hlnum{2}\hlstd{)}
+\hlstd{Normfun}\hlkwb{<-}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlnum{1}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlnum{2}\hlopt{*}\hlstd{pi)}\hlopt{*}\hlkwd{exp}\hlstd{(}\hlopt{-}\hlstd{x}\hlopt{^}\hlnum{2}\hlopt{/}\hlnum{2}\hlstd{)}
 \hlkwd{Normfun}\hlstd{(}\hlnum{1}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
@@ -251,10 +251,7 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{eval}\hlstd{(\{}
-    \hlstd{x} \hlkwb{<-} \hlnum{2}
-    \hlstd{x}\hlopt{^}\hlnum{2}
-\hlstd{\})}
+\hlkwd{eval}\hlstd{(\{x}\hlkwb{<-}\hlnum{2}\hlstd{;x}\hlopt{^}\hlnum{2}\hlstd{\})}
 \end{alltt}
 \begin{verbatim}
 ## [1] 4
@@ -279,10 +276,10 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{Tetrachoric} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,} \hlkwc{j}\hlstd{) \{}
-    \hlstd{(}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{^}\hlstd{(j} \hlopt{-} \hlnum{1}\hlstd{)}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlkwd{factorial}\hlstd{(j))} \hlopt{*} \hlkwd{eval}\hlstd{(}\hlkwd{Simplify}\hlstd{(}\hlkwd{DD}\hlstd{(NormDensity,} \hlstr{"x"}\hlstd{, j)))}
+\hlstd{Tetrachoric}\hlkwb{<-}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,}\hlkwc{j}\hlstd{)\{}
+  \hlstd{(}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{^}\hlstd{(j}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{/}\hlkwd{sqrt}\hlstd{(}\hlkwd{factorial}\hlstd{(j))}\hlopt{*}\hlkwd{eval}\hlstd{(}\hlkwd{Simplify}\hlstd{(}\hlkwd{DD}\hlstd{(NormDensity,}\hlstr{"x"}\hlstd{,j)))}
 \hlstd{\}}
-\hlkwd{Tetrachoric}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{3}\hlstd{)}
+\hlkwd{Tetrachoric}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## [1] -0.04408344
@@ -293,7 +290,7 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{Simplify}\hlstd{(}\hlkwd{D}\hlstd{(}\hlkwd{body}\hlstd{(Normfun),} \hlstr{"x"}\hlstd{))}
+\hlkwd{Simplify}\hlstd{(}\hlkwd{D}\hlstd{(}\hlkwd{body}\hlstd{(Normfun),}\hlstr{"x"}\hlstd{))}
 \end{alltt}
 \begin{verbatim}
 ## -(x * exp(-(x^2/2))/sqrt(2 * pi))
@@ -311,6 +308,7 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \section{符号计算扩展包}
 \subsection{Ryacas}
 想要做更多的符号计算内容，如解方程，泰勒展开等，可以借助第三方R扩展包Ryacas \cite{Ryacas}
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -318,11 +316,10 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \hlkwd{yacas}\hlstd{(}\hlstr{"Solve(x/(1+x) == a, x)"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
-## [1] "Starting Yacas!"
 ## expression(list(x == a/(1 - a)))
 \end{verbatim}
 \begin{alltt}
-\hlkwd{yacas}\hlstd{(}\hlkwd{expression}\hlstd{(}\hlkwd{Expand}\hlstd{((}\hlnum{1} \hlopt{+} \hlstd{x)}\hlopt{^}\hlnum{3}\hlstd{)))}
+\hlkwd{yacas}\hlstd{(}\hlkwd{expression}\hlstd{(}\hlkwd{Expand}\hlstd{((}\hlnum{1}\hlopt{+}\hlstd{x)}\hlopt{^}\hlnum{3}\hlstd{)))}
 \end{alltt}
 \begin{verbatim}
 ## expression(x^3 + 3 * x^2 + 3 * x + 1)
@@ -331,7 +328,7 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 \hlkwd{yacas}\hlstd{(}\hlstr{"OdeSolve(y''==4*y)"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
-## expression(C95 * exp(2 * x) + C99 * exp(-2 * x))
+## expression(C110 * exp(2 * x) + C114 * exp(-2 * x))
 \end{verbatim}
 \begin{alltt}
 \hlkwd{yacas}\hlstd{(}\hlstr{"Taylor(x,a,3) Exp(x)"}\hlstd{)}
@@ -345,7 +342,9 @@ $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 
 
 \subsection{rSymPy}
+
 rSymPy是Python的符号计算库SymPy的R接口
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -357,9 +356,13 @@ rSymPy是Python的符号计算库SymPy的R接口
 
 {\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: rJava}}
 
-{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: rjson}}\begin{alltt}
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: rjson}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# \\\#\# Attaching package: 'rSymPy'}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# The following objects are masked from 'package:Ryacas':\\\#\# \\\#\#\ \ \ \  as.character.Sym, deriv.Sym, Integrate, Limit, List, Math.Sym,\\\#\#\ \ \ \  Ops.Sym, print.Sym, Sym}}\begin{alltt}
 \hlstd{x} \hlkwb{<-} \hlkwd{Var}\hlstd{(}\hlstr{"x"}\hlstd{)}
-\hlstd{x} \hlopt{+} \hlstd{x}
+\hlstd{x}\hlopt{+}\hlstd{x}
 \end{alltt}
 \begin{verbatim}
 ## [1] "2*x"
@@ -431,24 +434,27 @@ rSymPy是Python的符号计算库SymPy的R接口
 \end{figure}
 
 符号微分
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{fun} \hlkwb{<-} \hlkwd{expression}\hlstd{(}\hlnum{100} \hlopt{*} \hlstd{(x2} \hlopt{-} \hlstd{x1}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(}\hlnum{1} \hlopt{-} \hlstd{x1)}\hlopt{^}\hlnum{2}\hlstd{)}
-\hlkwd{D}\hlstd{(fun,} \hlstr{"x1"}\hlstd{)}
+\hlstd{fun}\hlkwb{<-}\hlkwd{expression}\hlstd{(}\hlnum{100}\hlopt{*}\hlstd{(x2}\hlopt{-}\hlstd{x1}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{^}\hlnum{2}\hlopt{+}\hlstd{(}\hlnum{1}\hlopt{-}\hlstd{x1)}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlkwd{D}\hlstd{(fun,}\hlstr{"x1"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## -(2 * (1 - x1) + 100 * (2 * (2 * x1 * (x2 - x1^2))))
 \end{verbatim}
 \begin{alltt}
-\hlkwd{D}\hlstd{(fun,} \hlstr{"x2"}\hlstd{)}
+\hlkwd{D}\hlstd{(fun,}\hlstr{"x2"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## 100 * (2 * (x2 - x1^2))
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
 调用拟牛顿法求极值
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -460,9 +466,10 @@ rSymPy是Python的符号计算库SymPy的R接口
 \hlstd{grr1} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
     \hlstd{x1} \hlkwb{<-} \hlstd{x[}\hlnum{1}\hlstd{]}
     \hlstd{x2} \hlkwb{<-} \hlstd{x[}\hlnum{2}\hlstd{]}
-    \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{400} \hlopt{*} \hlstd{x1} \hlopt{*} \hlstd{(x2} \hlopt{-} \hlstd{x1} \hlopt{*} \hlstd{x1)} \hlopt{-} \hlnum{2} \hlopt{*} \hlstd{(}\hlnum{1} \hlopt{-} \hlstd{x1),} \hlnum{200} \hlopt{*} \hlstd{(x2} \hlopt{-} \hlstd{x1} \hlopt{*} \hlstd{x1))}
+    \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{400} \hlopt{*} \hlstd{x1} \hlopt{*} \hlstd{(x2} \hlopt{-} \hlstd{x1} \hlopt{*} \hlstd{x1)} \hlopt{-} \hlnum{2} \hlopt{*} \hlstd{(}\hlnum{1} \hlopt{-} \hlstd{x1),}
+       \hlnum{200} \hlopt{*}      \hlstd{(x2} \hlopt{-} \hlstd{x1} \hlopt{*} \hlstd{x1))}
 \hlstd{\}}
-\hlkwd{optim}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1.2}\hlstd{,} \hlnum{1}\hlstd{), fr, grr1,} \hlkwc{method} \hlstd{=} \hlstr{"BFGS"}\hlstd{)}
+\hlkwd{optim}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1.2}\hlstd{,}\hlnum{1}\hlstd{), fr, grr1,} \hlkwc{method} \hlstd{=} \hlstr{"BFGS"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## $par
@@ -483,16 +490,18 @@ rSymPy是Python的符号计算库SymPy的R接口
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
 仿照Tetrachoric函数的写法，可以简写grr1函数(这个写法可以稍微避免一点复制粘贴)：
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{grr2} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
-    \hlstd{x1} \hlkwb{<-} \hlstd{x[}\hlnum{1}\hlstd{]}
-    \hlstd{x2} \hlkwb{<-} \hlstd{x[}\hlnum{2}\hlstd{]}
-    \hlkwd{c}\hlstd{(}\hlkwd{eval}\hlstd{(}\hlkwd{D}\hlstd{(fun,} \hlstr{"x1"}\hlstd{)),} \hlkwd{eval}\hlstd{(}\hlkwd{D}\hlstd{(fun,} \hlstr{"x2"}\hlstd{)))}  \hlcom{# 表达式微分}
+\hlstd{grr2}\hlkwb{<-}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)\{}
+  \hlstd{x1} \hlkwb{<-} \hlstd{x[}\hlnum{1}\hlstd{]}
+  \hlstd{x2} \hlkwb{<-} \hlstd{x[}\hlnum{2}\hlstd{]}
+  \hlkwd{c}\hlstd{(}\hlkwd{eval}\hlstd{(}\hlkwd{D}\hlstd{(fun,}\hlstr{"x1"}\hlstd{)),}\hlkwd{eval}\hlstd{(}\hlkwd{D}\hlstd{(fun,}\hlstr{"x2"}\hlstd{)))}  \hlcom{# 表达式微分}
 \hlstd{\}}
-\hlkwd{optim}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1.2}\hlstd{,} \hlnum{1}\hlstd{), fr, grr2,} \hlkwc{method} \hlstd{=} \hlstr{"BFGS"}\hlstd{)}
+\hlkwd{optim}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1.2}\hlstd{,}\hlnum{1}\hlstd{), fr, grr2,} \hlkwc{method} \hlstd{=} \hlstr{"BFGS"}\hlstd{)}
 \end{alltt}
 \begin{verbatim}
 ## $par
@@ -513,15 +522,17 @@ rSymPy是Python的符号计算库SymPy的R接口
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
 如果调用numDeriv包\cite{numDeriv}，可以再少写点代码：
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(numDeriv)}
 \hlstd{grr3} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
-    \hlstd{x1} \hlkwb{<-} \hlstd{x[}\hlnum{1}\hlstd{]}
-    \hlstd{x2} \hlkwb{<-} \hlstd{x[}\hlnum{2}\hlstd{]}
-    \hlkwd{grad}\hlstd{(fr,} \hlkwd{c}\hlstd{(x1, x2))}  \hlcom{# 函数微分}
+  \hlstd{x1} \hlkwb{<-} \hlstd{x[}\hlnum{1}\hlstd{]}
+  \hlstd{x2} \hlkwb{<-} \hlstd{x[}\hlnum{2}\hlstd{]}
+  \hlkwd{grad}\hlstd{(fr,}\hlkwd{c}\hlstd{(x1,x2))}  \hlcom{# 函数微分}
 \hlstd{\}}
 \hlkwd{optim}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1.2}\hlstd{,} \hlnum{1}\hlstd{), fr, grr3,} \hlkwc{method} \hlstd{=} \hlstr{"BFGS"}\hlstd{)}
 \end{alltt}
@@ -544,20 +555,21 @@ rSymPy是Python的符号计算库SymPy的R接口
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
 如果一定要体现符号微分的过程，就调用Deriv包：
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{library}\hlstd{(Deriv)}
-\hlstd{fr1} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x1}\hlstd{,} \hlkwc{x2}\hlstd{) \{}
-    \hlcom{# 函数形式与上面不同}
-    \hlnum{100} \hlopt{*} \hlstd{(x2} \hlopt{-} \hlstd{x1} \hlopt{*} \hlstd{x1)}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(}\hlnum{1} \hlopt{-} \hlstd{x1)}\hlopt{^}\hlnum{2}
+\hlstd{fr1} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x1}\hlstd{,}\hlkwc{x2}\hlstd{) \{} \hlcom{# 函数形式与上面不同}
+  \hlnum{100} \hlopt{*} \hlstd{(x2} \hlopt{-} \hlstd{x1} \hlopt{*} \hlstd{x1)}\hlopt{^}\hlnum{2} \hlopt{+} \hlstd{(}\hlnum{1} \hlopt{-} \hlstd{x1)}\hlopt{^}\hlnum{2}
 \hlstd{\}}
 
 \hlstd{grr2} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
-    \hlstd{x1} \hlkwb{<-} \hlstd{x[}\hlnum{1}\hlstd{]}
-    \hlstd{x2} \hlkwb{<-} \hlstd{x[}\hlnum{2}\hlstd{]}
-    \hlkwd{Deriv}\hlstd{(fr1,} \hlkwc{cache.exp} \hlstd{=} \hlnum{FALSE}\hlstd{)(x1, x2)}  \hlcom{# 符号微分}
+  \hlstd{x1} \hlkwb{<-} \hlstd{x[}\hlnum{1}\hlstd{]}
+  \hlstd{x2} \hlkwb{<-} \hlstd{x[}\hlnum{2}\hlstd{]}
+  \hlkwd{Deriv}\hlstd{(fr1,}\hlkwc{cache.exp} \hlstd{=} \hlnum{FALSE}\hlstd{)(x1,x2)} \hlcom{# 符号微分}
 \hlstd{\}}
 \hlkwd{optim}\hlstd{(}\hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{1.2}\hlstd{,} \hlnum{1}\hlstd{), fr, grr2,} \hlkwc{method} \hlstd{=} \hlstr{"BFGS"}\hlstd{)}
 \end{alltt}
@@ -592,40 +604,57 @@ rSymPy是Python的符号计算库SymPy的R接口
   \item 除了数值优化还有做概率优化的R包，如仅遗传算法就有GA \cite{R-GA}， gafit \cite{R-gafit}，galts \cite{R-galts}， mcga \cite{R-mcga}， rgenoud \cite{R-rgenoud}，gaoptim \cite{R-gaoptim}， genalg \cite{R-genalg}等R包，这方面的最新成果参考文献 \cite{2016arXiv160501931S}。
 \end{enumerate}
 
-% \newpage
+
 \section{R软件信息}
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlkwd{sessionInfo}\hlstd{()}
 \end{alltt}
 \begin{verbatim}
-## R version 3.2.5 (2016-04-14)
-## Platform: x86_64-w64-mingw32/x64 (64-bit)
-## Running under: Windows 8.1 x64 (build 9600)
+## R version 3.4.3 (2017-11-30)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 16.04.4 LTS
+## 
+## Matrix products: default
+## BLAS: /usr/lib/openblas-base/libblas.so.3
+## LAPACK: /usr/lib/libopenblasp-r0.2.18.so
 ## 
 ## locale:
-## [1] LC_COLLATE=Chinese (Simplified)_China.936 
-## [2] LC_CTYPE=Chinese (Simplified)_China.936   
-## [3] LC_MONETARY=Chinese (Simplified)_China.936
-## [4] LC_NUMERIC=C                              
-## [5] LC_TIME=Chinese (Simplified)_China.936    
+##  [1] LC_CTYPE=en_US.UTF-8          LC_NUMERIC=C                 
+##  [3] LC_TIME=en_US.UTF-8           LC_COLLATE=en_US.UTF-8       
+##  [5] LC_MONETARY=en_US.UTF-8       LC_MESSAGES=en_US.UTF-8      
+##  [7] LC_PAPER=en_US.UTF-8          LC_NAME=en_US.UTF-8          
+##  [9] LC_ADDRESS=en_US.UTF-8        LC_TELEPHONE=en_US.UTF-8     
+## [11] LC_MEASUREMENT=en_US.UTF-8    LC_IDENTIFICATION=en_US.UTF-8
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] numDeriv_2014.2-1 rSymPy_0.2-1.1    rJython_0.0-4     rjson_0.2.15     
-## [5] rJava_0.9-8       Deriv_3.7.0       knitr_1.13       
+## [1] numDeriv_2016.8-1 rSymPy_0.2-1.1    rJython_0.0-4     rjson_0.2.15     
+## [5] rJava_0.9-9       Ryacas_0.3-1      Deriv_3.8.4       knitr_1.20       
 ## 
 ## loaded via a namespace (and not attached):
-## [1] magrittr_1.5    Ryacas_0.2-12.1 formatR_1.4     tools_3.2.5    
-## [5] stringi_1.1.1   highr_0.6       stringr_1.0.0   XML_3.98-1.4   
-## [9] evaluate_0.9
+## [1] compiler_3.4.3  magrittr_1.5    tools_3.4.3     Rcpp_0.12.15   
+## [5] stringi_1.1.6   highr_0.6       stringr_1.3.0   XML_3.98-1.10  
+## [9] evaluate_0.10.1
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-本文是在RStudio环境下用R sweave编写的，用knitr\cite{R-knitr}处理R代码，\XeLaTeX{}编译生成pdf文档。
+
+本文是在RStudio环境下用R sweave编写的，用knitr\cite{R-knitr}处理R代码，\XeLaTeX{}编译生成pdf文档。 编译之前安装必要的R包
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.973, 0.973, 0.973}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{Pkgs} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Ryacas"}\hlstd{,}\hlstr{"numDeriv"}\hlstd{,}\hlstr{"Deriv"}\hlstd{,}\hlstr{"knitr"}\hlstd{,}\hlstr{"rSymPy"}\hlstd{)}
+\hlkwd{installed.packages}\hlstd{(Pkgs)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
 
 \renewcommand\refname{参考文献} 
 \bibliographystyle{unsrt}

@@ -132,19 +132,20 @@ legend(-4, .3, legend = paste("n=", seq(n)), col = brewer.pal(9,"Set1")[1:n], lw
 \section{符号计算扩展包}
 \subsection{Ryacas}
 想要做更多的符号计算内容，如解方程，泰勒展开等，可以借助第三方R扩展包Ryacas \cite{Ryacas}
-<<>>=
+
+<<warning=FALSE>>=
 suppressPackageStartupMessages(library(Ryacas))
 yacas("Solve(x/(1+x) == a, x)")
 yacas(expression(Expand((1+x)^3)))
 yacas("OdeSolve(y''==4*y)")
 yacas("Taylor(x,a,3) Exp(x)")
 @
-<<include=FALSE>>=
-detach("package:Ryacas")
-@
+
 
 \subsection{rSymPy}
+
 rSymPy是Python的符号计算库SymPy的R接口
+
 <<>>=
 library(rSymPy)
 x <- Var("x")
@@ -173,12 +174,15 @@ cat(sympy("A**2"), "\n")
 \end{figure}
 
 符号微分
+
 <<>>=
 fun<-expression(100*(x2-x1^2)^2+(1-x1)^2)
 D(fun,"x1")
 D(fun,"x2")
 @
+
 调用拟牛顿法求极值
+
 <<>>=
 fr <- function(x) {  
     x1 <- x[1]
@@ -193,7 +197,9 @@ grr1 <- function(x) {
 }
 optim(c(-1.2,1), fr, grr1, method = "BFGS")
 @
+
 仿照Tetrachoric函数的写法，可以简写grr1函数(这个写法可以稍微避免一点复制粘贴)：
+
 <<>>=
 grr2<-function(x){
   x1 <- x[1]
@@ -202,7 +208,9 @@ grr2<-function(x){
 }
 optim(c(-1.2,1), fr, grr2, method = "BFGS")
 @
+
 如果调用numDeriv包\cite{numDeriv}，可以再少写点代码：
+
 <<>>=
 library(numDeriv)
 grr3 <- function(x) {
@@ -212,7 +220,9 @@ grr3 <- function(x) {
 }
 optim(c(-1.2, 1), fr, grr3, method = "BFGS")
 @
+
 如果一定要体现符号微分的过程，就调用Deriv包：
+
 <<>>=
 library(Deriv)
 fr1 <- function(x1,x2) { # 函数形式与上面不同
@@ -238,12 +248,20 @@ optim(c(-1.2, 1), fr, grr2, method = "BFGS")
   \item 除了数值优化还有做概率优化的R包，如仅遗传算法就有GA \cite{R-GA}， gafit \cite{R-gafit}，galts \cite{R-galts}， mcga \cite{R-mcga}， rgenoud \cite{R-rgenoud}，gaoptim \cite{R-gaoptim}， genalg \cite{R-genalg}等R包，这方面的最新成果参考文献 \cite{2016arXiv160501931S}。
 \end{enumerate}
 
-% \newpage
+
 \section{R软件信息}
+
 <<>>=
 sessionInfo()
 @
-本文是在RStudio环境下用R sweave编写的，用knitr\cite{R-knitr}处理R代码，\XeLaTeX{}编译生成pdf文档。
+
+本文是在RStudio环境下用R sweave编写的，用knitr\cite{R-knitr}处理R代码，\XeLaTeX{}编译生成pdf文档。 编译之前安装必要的R包
+
+<<eval=FALSE>>=
+Pkgs <- c("Ryacas","numDeriv","Deriv","knitr","rSymPy")
+installed.packages(Pkgs)
+@
+
 
 \renewcommand\refname{参考文献} 
 \bibliographystyle{unsrt}
