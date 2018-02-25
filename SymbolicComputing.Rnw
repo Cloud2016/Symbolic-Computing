@@ -1,12 +1,6 @@
 
 \documentclass[a4paper]{ctexart}
-\usepackage{geometry}
-\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
-
-\usepackage{amsmath,amsfonts,amssymb}
-\usepackage{relsize}
-\usepackage[colorlinks,linkcolor=red]{hyperref}
-\usepackage{graphicx}
+\usepackage[left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{xltxtra}
 
 \begin{document}
@@ -17,24 +11,16 @@
 \maketitle
 
 \tableofcontents
-\newpage
 
-<<r set,include=FALSE>>=
-library(knitr)
-# knit_theme$set("print")
-knit_theme$set("fruit")
-options(prompt=">")
-opts_chunk$set(size="normalsize",prompt=FALSE,tidy=TRUE)
+<<r setup,include=FALSE>>=
+knitr::opts_chunk$set(size="normalsize",prompt=FALSE,tidy=TRUE)
 @
 
-
-
 \section{引言}
+
 谈起符号计算，大家首先想到的可能就是大名鼎鼎的Maple，其次是Mathematica，但是他们都是商业软件，除了昂贵的价格外，对于想知道底层，并做一些修改的极客而言，都是很不可能的。自从遇到R以后，还是果断脱离商业软件的苦海，话说R做符号计算固然比不上Maple，但是你真的需要Maple这样的软件去做符号计算吗？我们看看R语言的符号计算能做到什么程度。
 
 \section{符号计算}
-
-
 \subsection{符号微分}
 
 在R中能够直接用来符号计算的是表达式，下面以Tetrachoric函数为例，
@@ -42,17 +28,22 @@ $$\tau(x)=\frac{(-1)^{j-1}}{\sqrt{j !}}\phi^{(j)}(x)$$
 其中
 $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$$
 在R里，声明表达式对象使用expression函数
+
 <<>>=
 NormDensity<-expression(1/sqrt(2*pi)*exp(-x^2/2))
 class(NormDensity)
 @
+
 计算一阶导数
+
 <<>>=
 D(NormDensity,"x") 
 deriv(NormDensity,"x")
 deriv3(NormDensity,"x") 
 @
+
 计算n阶导数
+
 <<>>=
 DD <- function(expr, name, order = 1) {
   if(order < 1) stop("'order' must be >= 1")
@@ -65,52 +56,66 @@ DD(NormDensity, "x", 3)
 \subsection{表达式转函数}
 
 很多时候我们使用R目的是计算，符号计算后希望可以直接代入计算，那么只需要在deriv中指定function.arg参数为TRUE。
+
 <<>>=
 DFun<-deriv(NormDensity,"x",function.arg = TRUE)
 DFun(1)
 DFun(0)
 @
+
 从计算结果可以看出，deriv不仅计算了导数值还计算了原函数在该处的函数值。我们可以作如下简单验证：
+
 <<>>=
 Normfun<-function(x) 1/sqrt(2*pi)*exp(-x^2/2)
 Normfun(1)
 Normfun(0)
 @
+
 在讲另外一个将表达式转化为函数的方法之前，先来一个小插曲，有没有觉得之前计算3阶导数的结果太复杂了，说不定看到这的人，早就要吐槽了！这个问题已经有高人写了Deriv包\cite{R-Deriv}来解决，请看：
+
 <<>>=
 DD(NormDensity, "x", 3)
 library(Deriv)
 Simplify(DD(NormDensity, "x", 3))
 @
-三阶导数根本不在话下，如果想体验更高阶导数，不妨请读者动动手！\\
-表达式转函数的关键是理解函数其实是由参数列表(args)和函数体(body)两部分构成，
-以前面自编的Normfun函数为例
+
+三阶导数根本不在话下，如果想体验更高阶导数，不妨请读者动动手！表达式转函数的关键是理解函数其实是由参数列表(args)和函数体(body)两部分构成，以前面自编的Normfun函数为例
+
 <<>>=
 body(Normfun)
 args(Normfun)
 @
+
 而函数体被一对花括号括住的就是表达式，查看eval函数帮助，我们可以知道eval计算的对象就是表达式。
 下面来个小示例以说明此问题。
+
 <<>>=
 eval({x<-2;x^2})
 eval(body(Normfun))
 Normfun(2)
 @
-至此我们可以将表达式转化为函数，也许又有读者耐不住了，既然可以用eval函数直接计算，干嘛还要转化为函数？这个主要是写成函数比较方便，你可能需要重复计算不同的函数值，甚至放在你的算法的中间过程中......(此处省略500字，请读者自己理解)\\
+
+至此我们可以将表达式转化为函数，也许又有读者耐不住了，既然可以用eval函数直接计算，干嘛还要转化为函数？这个主要是写成函数比较方便，你可能需要重复计算不同的函数值，甚至放在你的算法的中间过程中......(此处省略500字，请读者自己理解)
+
 终于又回到开篇处Tetrachoric函数，里面要计算任意阶导数，反正现在是没问题了，管他几阶，
 算完后化简转函数，请看：
+
 <<>>=
 Tetrachoric<-function(x,j){
   (-1)^(j-1)/sqrt(factorial(j))*eval(Simplify(DD(NormDensity,"x",j)))
 }
 Tetrachoric(2,3)
 @
+
 有时候我们有的就是函数，这怎么计算导数呢？按道理，看完上面的过程，这已经不是什么问题啦！
+
 <<>>=
 Simplify(D(body(Normfun),"x"))
 @
+
 作为本节的最后，献上Tetrachoric函数图像，这个函数的作用主要是计算多元正态分布的概率，详细内容参看\cite{Harris1980The}。
-<<eval=FALSE,include=FALSE,echo=FALSE,fig.align='center',fig.width=10,fig.height=6>>=
+
+<<eval=TRUE,echo=FALSE,fig.align='center',fig.width=10,fig.height=6>>=
 t<-seq(-4,4,length.out = 80)
 plot(c(-4,4),c(-0.3,0.3),xlab=expression(x),ylab="",main = expression(Tetrachoric(x)),type = "n")
 abline(v=0,h=0,lty=2)
@@ -123,14 +128,10 @@ for (i in seq(n)) {
 }
 legend(-4, .3, legend = paste("n=", seq(n)), col = brewer.pal(9,"Set1")[1:n], lwd = 1)
 @
-\begin{figure}[htb]
-  \centering
-    \includegraphics[width=.8\textwidth,height=.4\textwidth]{figure/Tetrachoric.pdf}
-  \caption{Tetrachoric函数}
-\end{figure} 
 
 \section{符号计算扩展包}
-\subsection{Ryacas}
+\subsection{Ryacas 包}
+
 想要做更多的符号计算内容，如解方程，泰勒展开等，可以借助第三方R扩展包Ryacas \cite{Ryacas}
 
 <<warning=FALSE>>=
@@ -142,7 +143,7 @@ yacas("Taylor(x,a,3) Exp(x)")
 @
 
 
-\subsection{rSymPy}
+\subsection{rSymPy包}
 
 rSymPy是Python的符号计算库SymPy的R接口
 
@@ -160,13 +161,10 @@ cat(sympy("A = Matrix([[1,x], [y,1]])"), "\n")
 cat(sympy("A**2"), "\n")
 @
 
-
-
 \section{符号计算在优化算法中的应用}
 
-学过运筹学或者数值分析课程的可能知道，有不少优化算法是要求导或者求梯度的，
-如拟牛顿算法，最速下降法和共轭梯度法，还有求解非线性方程组的拟牛顿算法及其修正算法。\\
-下面以求Rosenbrock函数的极小值为例：\\
+学过运筹学或者数值分析课程的可能知道，有不少优化算法是要求导或者求梯度的，如拟牛顿算法，最速下降法和共轭梯度法，还有求解非线性方程组的拟牛顿算法及其修正算法。下面以求Rosenbrock函数的极小值为例：
+
 \begin{figure}[htb]
   \centering
     \includegraphics[width=.5\textwidth,height=.5\textwidth]{figure/Rosenbrock.pdf}
@@ -262,12 +260,7 @@ Pkgs <- c("Ryacas","numDeriv","Deriv","knitr","rSymPy")
 installed.packages(Pkgs)
 @
 
-
-\renewcommand\refname{参考文献} 
 \bibliographystyle{unsrt}
-\bibliography{mybib.bib} 
-
-
-
+\bibliography{refer.bib}
 
 \end{document}
